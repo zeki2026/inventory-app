@@ -1,0 +1,19 @@
+services:
+  inventory-app:
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src:/app/src
+      - maven-cache:/root/.m2
+    networks:
+      - app-web-networks
+    
+networks:
+  app-web-networks:
+    driver: bridge
+
+volumes:
+  maven-cache:

@@ -8,12 +8,31 @@ services:
     volumes:
       - ./src:/app/src
       - maven-cache:/root/.m2
+    depends_on:
+      - mongo
     networks:
-      - app-web-networks
+      - inventory-network
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/inventorydb
     
+    
+  mongo:
+    image: mongo:8.2
+    container_name: inventory-mongo
+    hostname: mongodb-server
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/config/db
+    networks:
+      - inventory-network
+
 networks:
-  app-web-networks:
+  inventory-network:
     driver: bridge
 
 volumes:
   maven-cache:
+  mongo-data:
+  mongo-config:
